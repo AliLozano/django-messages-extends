@@ -1,0 +1,14 @@
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.subject %}<strong>{{ message.subject }}</strong><br />{% endif %}
+        {{ message.message|truncatewords:20 }}{% if message.message != message.message|truncatewords:20 %} <a class="message-more" href="{% url message_detail message.pk %}">more</a>{% endif %}<br />
+        {% if message.is_persistent or jquery %}<a class="message-close" href="{% if message.is_persistent %}{% url message_mark_read message.pk %}{% else %}#{% endif %}"><span>Close</span></a>{% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% if close_all and messages|length > 1 %}
+<a class="message-close-all" href="{% url message_mark_all_read %}"><span>Close all</span></a>
+{% endif %}
+{% endif %}

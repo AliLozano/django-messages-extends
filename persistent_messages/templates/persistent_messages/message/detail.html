@@ -1,0 +1,7 @@
+{# Example message detail template #}
+<div class="message{% if message.tags %} {{ message.tags }}{% endif %}>">
+    {% if message.subject %}<h1>{{ message.subject }}</h1>{% endif %}
+    <p>{{ message.created|date }}</p>
+    {% if message.from_user %}<p>From: {{ message.from_user }}</p>{% endif %}
+    <p>{{ message.message }}</p>
+</ul>
