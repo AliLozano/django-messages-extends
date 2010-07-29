@@ -6,6 +6,7 @@ from django.utils.encoding import force_unicode
 from django.contrib import messages
 from django.contrib.messages import utils
 from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import force_unicode
 
 LEVEL_TAGS = utils.get_level_tags()
 
@@ -45,6 +46,22 @@ class Message(models.Model):
         else:
             message = self.message
         return force_unicode(message)
+
+    def _prepare_message(self):
+        """
+        Prepares the message for saving by forcing the ``message``
+        and ``extra_tags`` and ``subject`` to unicode in case they are lazy translations.
+
+        Known "safe" types (None, int, etc.) are not converted (see Django's
+        ``force_unicode`` implementation for details).
+        """
+        self.subject = force_unicode(self.subject, strings_only=True)
+        self.message = force_unicode(self.message, strings_only=True)
+        self.extra_tags = force_unicode(self.extra_tags, strings_only=True)
+
+    def save(self, *args, **kwargs):
+        self._prepare_message()
+        super(Message, self).save(*args, **kwargs)
 
     def _get_tags(self):
         label_tag = force_unicode(LEVEL_TAGS.get(self.level, ''),
