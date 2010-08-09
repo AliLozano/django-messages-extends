@@ -32,6 +32,8 @@ class Message(models.Model):
     created = models.DateTimeField(auto_now_add=True)    
     modified = models.DateTimeField(auto_now=True)
     read = models.BooleanField(default=False)
+    expires = models.DateTimeField(null=True, blank=True)
+    close_timeout = models.IntegerField(null=True, blank=True)
 
     def is_persistent(self):
         return self.level in PERSISTENT_MESSAGE_LEVELS

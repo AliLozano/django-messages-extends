@@ -12,6 +12,18 @@ $(document).ready(function() {
             });
         });
     };
+    $.fn.messageCloseTimeout = function(interval) {
+        var _this = $(this);
+        setTimeout(function() {
+            _this.messageClose();
+            var close = _this.find(closeSelector);
+            if (close.attr('href') != '#') {
+                $.ajax({
+                    url: $(this).attr('href')
+                })
+            }
+        }, interval)
+    };
     $(closeSelector).click(function(event) {
         event.preventDefault();
         if ($(this).attr('href') != '#') {
@@ -32,7 +44,14 @@ $(document).ready(function() {
         $(this).messageClose();
         $(messageSelector).messageClose();
     });
+
+    {% for message in messages %}
+    {% if message.close_timeout %}
+    $('#message-{{ message.pk }}').messageCloseTimeout({{ message.close_timeout }});
+    {% endif %}
+    {% endfor %}
 });
+
 //]]>
 </script>
 {% with 1 as jquery %}

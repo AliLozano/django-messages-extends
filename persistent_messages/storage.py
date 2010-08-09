@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.contrib.messages.storage.base import BaseStorage
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.messages.storage.fallback import FallbackStorage
+from django.db.models import Q
+import datetime
 
 def get_user(request):
     if hasattr(request, 'user') and request.user.__class__ != AnonymousUser:
@@ -35,7 +37,7 @@ class PersistentMessageStorage(FallbackStorage):
         if not get_user(self.request).is_authenticated():
             return super(PersistentMessageStorage, self)._get(*args, **kwargs)
         messages = []
-        for message in Message.objects.filter(user=get_user(self.request)).exclude(read=True):
+        for message in Message.objects.filter(user=get_user(self.request)).exclude(read=True).filter(Q(expires=None) | Q(expires__gt=datetime.datetime.now())):
             if not message.is_persistent():
                 self.non_persistent_messages.append(message)
             messages.append(message)
@@ -90,7 +92,7 @@ class PersistentMessageStorage(FallbackStorage):
             self._delete_non_persistent()
         return super(PersistentMessageStorage, self).update(response)
 
-    def add(self, level, message, extra_tags='', subject='', user=None, from_user=None):
+    def add(self, level, message, extra_tags='', subject='', user=None, from_user=None, expires=None, close_timeout=None):
         """
         Queues a message to be stored.
 
@@ -110,7 +112,7 @@ class PersistentMessageStorage(FallbackStorage):
         if level < self.level:
             return
         # Add the message.
-        message = Message(user=to_user, level=level, message=message, extra_tags=extra_tags, subject=subject, from_user=from_user)
+        message = Message(user=to_user, level=level, message=message, extra_tags=extra_tags, subject=subject, from_user=from_user, expires=expires, close_timeout=close_timeout)
         # Messages need a primary key when being displayed so that they can be closed/marked as read by the user.
         # Hence, save it now instead of adding it to queue:
         if STORE_WHEN_ADDING:
