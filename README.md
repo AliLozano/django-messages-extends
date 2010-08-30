@@ -15,7 +15,7 @@ Installation
 
 This document assumes that you are familiar with Python and Django.
 
-1. [Download and unzip the app](http://github.com/philomat/django-persistent-messages/), or install using `git`:
+1. [Download and unzip the app](http://github.com/philomat/django-persistent-messages/), or clone the source using `git`:
 
         $ git clone git://github.com/philomat/django-persistent-messages.git
 
