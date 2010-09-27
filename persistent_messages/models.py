@@ -69,12 +69,18 @@ class Message(models.Model):
         label_tag = force_unicode(LEVEL_TAGS.get(self.level, ''),
                                   strings_only=True)
         extra_tags = force_unicode(self.extra_tags, strings_only=True)
+   
+        if (self.read):
+            read_tag = "read"
+        else:
+            read_tag = "unread"  
+   
         if extra_tags and label_tag:
-            return u' '.join([extra_tags, label_tag])
+            return u' '.join([extra_tags, label_tag, read_tag])
         elif extra_tags:
-            return extra_tags
+            return u' '.join([extra_tags, read_tag])
         elif label_tag:
-            return label_tag
-        return ''
+            return u' '.join([label_tag, read_tag])
+        return read_tag
     tags = property(_get_tags)
     
