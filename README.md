@@ -3,7 +3,7 @@ Django Persistent Messages
 
 A Django app for unified and persistent user messages/notifications, built on top of Django's [messages framework](http://docs.djangoproject.com/en/dev/ref/contrib/messages/) (`django.contrib.messages`).
 
-This app provides support for messages that are supposed to be persistent, that is, they outlast a browser session and will be displayed as “sticky” notes to the user, until they are actively marked as read. Once read, messages are still listed in the message inbox for each user. 
+This app provides support for messages that are supposed to be persistent, that is, they outlast a browser session and will be displayed as “sticky” notes to the user, until they are actively marked as read. Once read, messages are still listed in the message inbox for each user. In short: While `django.contrib.messages` makes sure that messages you create are displayed to the user, this app makes sure that they actually get noticed.  
 
 * For authenticated users, messages are stored in the database. They can be temporary just like regular messages, or persistent as described above.
 * For anonymous users, the default cookie/session-based approach is used, i.e. there is no database access for storing messages.
@@ -15,7 +15,7 @@ Installation
 
 This document assumes that you are familiar with Python and Django.
 
-1. [Download and unzip the app](http://github.com/philomat/django-persistent-messages/), or install using `git`:
+1. [Download and unzip the app](http://github.com/philomat/django-persistent-messages/), or clone the source using `git`:
 
         $ git clone git://github.com/philomat/django-persistent-messages.git
 
