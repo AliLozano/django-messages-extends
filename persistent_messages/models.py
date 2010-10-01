@@ -73,7 +73,7 @@ class Message(models.Model):
         if (self.read):
             read_tag = "read"
         else:
-            read_tag = "unread"  
+            read_tag = "unread"
    
         if extra_tags and label_tag:
             return u' '.join([extra_tags, label_tag, read_tag])

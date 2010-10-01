@@ -1,4 +1,5 @@
 from persistent_messages.models import Message
+from persistent_messages.constants import PERSISTENT_MESSAGE_LEVELS
 from django.contrib import messages 
 from django.contrib.messages.storage.base import BaseStorage
 from django.contrib.auth.models import AnonymousUser
@@ -27,6 +28,12 @@ class PersistentMessageStorage(FallbackStorage):
         self.non_persistent_messages = []
         self.is_anonymous = not get_user(self.request).is_authenticated()
 
+    def _message_queryset(self, exclude_unread=True):
+        qs = Message.objects.filter(user=get_user(self.request)).filter(Q(expires=None) | Q(expires__gt=datetime.datetime.now()))
+        if exclude_unread:
+            qs = qs.exclude(read=True)
+        return qs
+
     def _get(self, *args, **kwargs):
         """
         Retrieves a list of stored messages. Returns a tuple of the messages
@@ -37,11 +44,23 @@ class PersistentMessageStorage(FallbackStorage):
         if not get_user(self.request).is_authenticated():
             return super(PersistentMessageStorage, self)._get(*args, **kwargs)
         messages = []
-        for message in Message.objects.filter(user=get_user(self.request)).exclude(read=True).filter(Q(expires=None) | Q(expires__gt=datetime.datetime.now())):
+        for message in self._message_queryset():
             if not message.is_persistent():
                 self.non_persistent_messages.append(message)
             messages.append(message)
         return (messages, True)
+
+    def get_persistent(self):
+        return self._message_queryset(exclude_unread=False).filter(level__in=PERSISTENT_MESSAGE_LEVELS)
+
+    def get_persistent_unread(self):
+        return self._message_queryset(exclude_unread=True).filter(level__in=PERSISTENT_MESSAGE_LEVELS)
+
+    def count_unread(self):
+        return self._message_queryset(exclude_unread=True).count()
+
+    def count_persistent_unread(self):
+        return self.get_persistent_unread().count()
         
     def _delete_non_persistent(self):
         for message in self.non_persistent_messages:
