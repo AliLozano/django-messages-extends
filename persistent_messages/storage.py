@@ -1,7 +1,6 @@
+from django.conf import settings
 from persistent_messages.models import Message
 from persistent_messages.constants import PERSISTENT_MESSAGE_LEVELS
-from django.contrib import messages 
-from django.contrib.messages.storage.base import BaseStorage
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.db.models import Q
@@ -18,18 +17,18 @@ Messages need a primary key when being displayed so that they can be closed/mark
 Hence, they need to be stored when being added. You can disable this, but then you'll only be able to 
 close a message when it is displayed for the second time. 
 """
-STORE_WHEN_ADDING = True
+STORE_WHEN_ADDING = getattr(settings, 'MESSAGES_STORE_WHEN_ADDING', True)
 
 #@TODO USE FALLBACK 
 class PersistentMessageStorage(FallbackStorage):
-
     def __init__(self, *args, **kwargs):
         super(PersistentMessageStorage, self).__init__(*args, **kwargs)
         self.non_persistent_messages = []
         self.is_anonymous = not get_user(self.request).is_authenticated()
 
     def _message_queryset(self, exclude_unread=True):
-        qs = Message.objects.filter(user=get_user(self.request)).filter(Q(expires=None) | Q(expires__gt=datetime.datetime.now()))
+        qs = Message.objects.filter(user=get_user(self.request)).filter(
+            Q(expires=None) | Q(expires__gt=datetime.datetime.now()))
         if exclude_unread:
             qs = qs.exclude(read=True)
         return qs
@@ -61,7 +60,7 @@ class PersistentMessageStorage(FallbackStorage):
 
     def count_persistent_unread(self):
         return self.get_persistent_unread().count()
-        
+
     def _delete_non_persistent(self):
         for message in self.non_persistent_messages:
             message.delete()
@@ -84,7 +83,7 @@ class PersistentMessageStorage(FallbackStorage):
         Obsolete method since model takes care of this.
         """
         pass
-        
+
     def _store(self, messages, response, *args, **kwargs):
         """
         Stores a list of messages, returning a list of any messages which could
@@ -93,6 +92,9 @@ class PersistentMessageStorage(FallbackStorage):
         If STORE_WHEN_ADDING is True, messages are already stored at this time and won't be
         saved again.
         """
+
+        messages = [message for message in messages if not message.is_sticky()]
+
         if not get_user(self.request).is_authenticated():
             return super(PersistentMessageStorage, self)._store(messages, response, *args, **kwargs)
         for message in messages:
@@ -111,7 +113,8 @@ class PersistentMessageStorage(FallbackStorage):
             self._delete_non_persistent()
         return super(PersistentMessageStorage, self).update(response)
 
-    def add(self, level, message, extra_tags='', subject='', user=None, from_user=None, expires=None, close_timeout=None):
+    def add(self, level, message, extra_tags='', subject='', user=None, from_user=None, expires=None,
+            close_timeout=None):
         """
         Queues a message to be stored.
 
@@ -126,12 +129,13 @@ class PersistentMessageStorage(FallbackStorage):
                 return super(PersistentMessageStorage, self).add(level, message, extra_tags)
         if not message:
             return
-        # Check that the message level is not less than the recording level.
+            # Check that the message level is not less than the recording level.
         level = int(level)
         if level < self.level:
             return
-        # Add the message.
-        message = Message(user=to_user, level=level, message=message, extra_tags=extra_tags, subject=subject, from_user=from_user, expires=expires, close_timeout=close_timeout)
+            # Add the message.
+        message = Message(user=to_user, level=level, message=message, extra_tags=extra_tags, subject=subject,
+            from_user=from_user, expires=expires, close_timeout=close_timeout)
         # Messages need a primary key when being displayed so that they can be closed/marked as read by the user.
         # Hence, save it now instead of adding it to queue:
         if STORE_WHEN_ADDING:
