@@ -123,11 +123,11 @@ class PersistentMessageStorage(FallbackStorage):
         not less than the recording level (``self.level``).
         """
         to_user = user or get_user(self.request)
-        if not to_user.is_authenticated() or Message(
-            level=level).is_sticky():# si es sticky también dejar que lo procese la session
+        if not to_user.is_authenticated() or Message(level=level).is_sticky():
             if Message(level=level).is_persistent():
                 raise NotImplementedError('Persistent message levels cannot be used for anonymous users.')
             else:
+                #if user is not logged or message is sticky
                 return super(PersistentMessageStorage, self).add(level, message, extra_tags)
         if not message:
             return
