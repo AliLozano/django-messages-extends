@@ -65,6 +65,7 @@ class PersistentMessageStorage(FallbackStorage):
         for message in self.non_persistent_messages:
             message.delete()
         self.non_persistent_messages = []
+        self.non_persistent_messages = []
 
     def __iter__(self):
         if not get_user(self.request).is_authenticated():
@@ -122,7 +123,8 @@ class PersistentMessageStorage(FallbackStorage):
         not less than the recording level (``self.level``).
         """
         to_user = user or get_user(self.request)
-        if not to_user.is_authenticated():
+        if not to_user.is_authenticated() or Message(
+            level=level).is_sticky():# si es sticky también dejar que lo procese la session
             if Message(level=level).is_persistent():
                 raise NotImplementedError('Persistent message levels cannot be used for anonymous users.')
             else:
