@@ -46,7 +46,7 @@ class Message(models.Model):
         """
         return self.level in STICKY_MESSAGE_LEVELS
 
-    is_stycky.boolean = True
+    is_sticky.boolean = True
 
     def __eq__(self, other):
         return isinstance(other, Message) and self.level == other.level and\
