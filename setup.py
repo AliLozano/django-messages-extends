@@ -10,7 +10,7 @@ setup(
     description='A Django app for extends Django\'s messages framework, adds sticky messages and persistent messages',
     long_description=read('README.md'),
     author='philomat',
-    initial-project = 'https://github.com/philomat/django-persistent-messages',
+    base-project = 'https://github.com/philomat/django-persistent-messages',
     rebuild-author='AliLozano',
     license='BSD',
     url='https://github.com/AliLozano/django-messages-extends/',
