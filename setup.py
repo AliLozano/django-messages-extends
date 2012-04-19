@@ -5,15 +5,16 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name='django-persistent-messages',
+    name='django-messages-extends',
     version='0.1',
-    description='A Django app for unified and persistent user messages/notifications, built on top of Django\'s messages framework'
-    ,
+    description='A Django app for extends Django\'s messages framework, adds sticky messages and persistent messages',
     long_description=read('README.md'),
     author='philomat',
+    initial-project = 'https://github.com/philomat/django-persistent-messages',
+    rebuild-author='AliLozano',
     license='BSD',
-    url='http://github.com/philomat/django-persistent-messages',
-    keywords=['messages', 'django', 'persistent', ],
+    url='https://github.com/AliLozano/django-messages-extends/',
+    keywords=['messages', 'django', 'persistent', 'sticky',  ],
     packages=[
         'messages_extends',
         ],
