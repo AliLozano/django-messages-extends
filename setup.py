@@ -7,15 +7,16 @@ def read(fname):
 setup(
     name='django-persistent-messages',
     version='0.1',
-    description='A Django app for unified and persistent user messages/notifications, built on top of Django\'s messages framework',
+    description='A Django app for unified and persistent user messages/notifications, built on top of Django\'s messages framework'
+    ,
     long_description=read('README.md'),
     author='philomat',
     license='BSD',
     url='http://github.com/philomat/django-persistent-messages',
-    keywords = ['messages', 'django', 'persistent',],
+    keywords=['messages', 'django', 'persistent', ],
     packages=[
-        'persistent_messages',
-    ],
+        'messages_extends',
+        ],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
@@ -24,6 +25,6 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Framework :: Django',
-    ],
+        ],
     zip_safe=False,
 )
