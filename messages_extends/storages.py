@@ -77,7 +77,7 @@ class FallbackStorage(BaseStorage):
         return messages
 
 
-    def add(self, level, message, extra_tags=''):
+    def add(self, level, message, extra_tags='', *args, **kwargs):
         """
         Queues a message to be stored.
 
@@ -95,7 +95,7 @@ class FallbackStorage(BaseStorage):
         message = Message(level, message, extra_tags=extra_tags)
         for storage in self.storages:
             if hasattr(storage, 'process_message'):
-                message = storage.process_message(message)
+                message = storage.process_message(message, *args, **kwargs)
                 if not message:
                     return
         self._queued_messages.append(message)
@@ -145,7 +145,7 @@ class PersistentStorage(BaseStorage):
         #There are alredy saved.
         return [message for message in messages if not message.level in PERSISTENT_MESSAGE_LEVELS]
 
-    def process_message(self, message):
+    def process_message(self, message,*args, **kwargs):
         """
         If its level is into persist levels, convert the message to models and save it
         """
@@ -157,7 +157,12 @@ class PersistentStorage(BaseStorage):
         message_persistent.level = message.level
         message_persistent.message = message.message
         message_persistent.extra_tags = message.extra_tags
-        message_persistent.user = self.get_user()
+        if kwargs.has_key("user"):
+            message_persistent.user = kwargs["user"]
+        else:
+            message_persistent.user = self.get_user()
+        if kwargs.has_key("expires"):
+            message_persistent.expires = kwargs["expires"]
         message_persistent.save()
         return None
 

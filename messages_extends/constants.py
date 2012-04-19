@@ -1,0 +1,42 @@
+#if level for messages is 11 to don't show debug messages,
+#then debug persistent and debug sticky don't show
+
+DEBUG = 10
+INFO = 20
+SUCCESS = 25
+WARNING = 30
+ERROR = 40
+
+DEBUG_PERSISTENT = 9
+INFO_PERSISTENT = 19
+SUCCESS_PERSISTENT = 24
+WARNING_PERSISTENT = 29
+ERROR_PERSISTENT = 39
+
+DEBUG_STICKY = 8
+INFO_STICKY = 18
+SUCCESS_STICKY = 23
+WARNING_STICKY = 28
+ERROR_STICKY = 38
+
+DEFAULT_TAGS = {
+    DEBUG_PERSISTENT: 'debug persistent',
+    INFO_PERSISTENT: 'info persistent',
+    SUCCESS_PERSISTENT: 'success persistent',
+    WARNING_PERSISTENT: 'warning persistent',
+    ERROR_PERSISTENT: 'error persistent',
+
+    DEBUG_STICKY: 'debug sticky',
+    INFO_STICKY: 'info sticky',
+    SUCCESS_STICKY: 'success sticky',
+    WARNING_STICKY: 'warning sticky',
+    ERROR_STICKY: 'error sticky',
+
+}
+
+PERSISTENT_MESSAGE_LEVELS = (
+    DEBUG_PERSISTENT, INFO_PERSISTENT, SUCCESS_PERSISTENT, WARNING_PERSISTENT, ERROR_PERSISTENT
+)
+STICKY_MESSAGE_LEVELS = (
+    DEBUG_STICKY, INFO_STICKY, SUCCESS_STICKY, WARNING_STICKY, ERROR_STICKY
+    )
