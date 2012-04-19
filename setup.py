@@ -11,7 +11,7 @@ setup(
     long_description=read('README.md'),
     author='philomat',
     #base-project = 'https://github.com/philomat/django-persistent-messages',
-    co-author='AliLozano',
+    #co-author='AliLozano',
     license='BSD',
     url='https://github.com/AliLozano/django-messages-extends/',
     keywords=['messages', 'django', 'persistent', 'sticky',  ],
