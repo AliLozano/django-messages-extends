@@ -122,7 +122,7 @@ You can also pass this function a `User` object if the message is supposed to be
     sally = User.objects.get(username='Sally')
     messages.add_message(request, constants_messages.INFO_PERSISTENT, "Hola abc desde %s" %request.user, user=sally)
 
-To persistent storages, there are other commands like expires that is a datetime.
+To persistent storages, there are other params like expires that is a datetime.
 
 ### Displaying messages ###
 
