@@ -137,7 +137,7 @@ Messages can be displayed [as described in the Django manual](http://docs.django
     {% endfor %}
     
 
-You can also use the bundled templates instead. The following line replaces the code above. It allows the user to remove messages using bootstrap styling(you need use bootstrap.css and boostrap.js)
+You can also use the bundled templates instead. The following line replaces the code above. It allows the user to remove messages using [bootstrap styling](http://twitter.github.com/bootstrap/)(you need use bootstrap.css and boostrap.js)
 
     {% include "messages_extends/includes/alerts_bootstrap.html" %}
 
@@ -163,6 +163,9 @@ You can use other backends, by default use:
              'django.contrib.messages.storage.session.SessionStorage'))
 
 But you can add or remove other backends in your settings in order that you need execute that, remember that session storagge save all messages, then you have to put it at final.
+
+### Remember ###
+Remember that this module is only for messages from application, to messages between users you can use [postman](https://bitbucket.org/psam/django-postman) u other framework and to messages for activity stream you can use [django-activity-stream](https://github.com/justquick/django-activity-stream)
 
 ### \#TODO Fix english, is terrible.!!! 
 
