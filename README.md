@@ -49,7 +49,7 @@ This document assumes that you are familiar with Python and Django.
             ...
         )
 
-6. In your settings, set the message [storage backend](http://docs.djangoproject.com/en/dev/ref/contrib/messages/#message-storage-backends) to `persistent_messages.storage.PersistentMessageStorage`:
+6. In your settings, set the message [storage backend](http://docs.djangoproject.com/en/dev/ref/contrib/messages/#message-storage-backends) to `messages_extends.storages.FallbackStorage`:
 
         MESSAGE_STORAGE = 'messages_extends.storages.FallbackStorage'
 
