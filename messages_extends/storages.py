@@ -7,6 +7,7 @@ from messages_extends.models import Message as PersistentMessage
 from messages_extends.constants import PERSISTENT_MESSAGE_LEVELS
 from django.contrib.auth.models import AnonymousUser
 from django.db.models import Q
+from django.utils import timezone
 
 __author__ = 'ali'
 
@@ -124,7 +125,7 @@ class PersistentStorage(BaseStorage):
         """
         qs = PersistentMessage.objects.\
         filter(user=self.get_user()).\
-        filter(Q(expires=None) | Q(expires__gt=datetime.datetime.now()))
+        filter(Q(expires=None) | Q(expires__gt=timezone.now()))
         if not include_read:
             qs = qs.exclude(read=True)
         return qs
