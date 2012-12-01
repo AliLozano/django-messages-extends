@@ -1,4 +1,3 @@
-import datetime
 from django.contrib.messages.storage import get_storage
 from django.contrib.messages.storage.base import BaseStorage, Message
 from constants import STICKY_MESSAGE_LEVELS
@@ -7,7 +6,10 @@ from messages_extends.models import Message as PersistentMessage
 from messages_extends.constants import PERSISTENT_MESSAGE_LEVELS
 from django.contrib.auth.models import AnonymousUser
 from django.db.models import Q
-from django.utils import timezone
+try:
+    from django.utils import timezone
+except ImportError:
+    from datetime import datetime as timezone
 
 __author__ = 'ali'
 
