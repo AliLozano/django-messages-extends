@@ -121,13 +121,26 @@ class PersistentStorage(BaseStorage):
         self._sticky_messages = []
         super(PersistentStorage, self).__init__(request, *args, **kwargs)
 
-    def _message_queryset(self, include_read=False):
+    def _message_queryset(self, include_read=False, round_time=False):
         """
         Return a queryset of messages for the request user
         """
+        import datetime, pytz
+
+        def round_time(dt=None, round_seconds=60):
+            if dt == None :
+                dt = datetime.datetime.now()
+            seconds = (dt - dt.min).seconds
+            rounding = (seconds+round_seconds/2) // round_seconds * round_seconds
+            return dt + datetime.timedelta(0, rounding - seconds, -dt.microsecond)
+
+        expire = timezone.now()
+        if round_time:
+            expire = round_time(round_seconds=15*60).replace(tzinfo=pytz.utc)
+
         qs = PersistentMessage.objects.\
         filter(user=self.get_user()).\
-        filter(Q(expires=None) | Q(expires__gt=timezone.now()))
+        filter(Q(expires=None) | Q(expires__gt=expire))
         if not include_read:
             qs = qs.exclude(read=True)
         return qs
