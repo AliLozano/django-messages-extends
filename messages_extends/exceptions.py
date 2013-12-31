@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+"""admin.py: messages extends"""
+
+from __future__ import unicode_literals
+
 __author__ = 'ali'
 
 class LevelOfMessageException(Exception):

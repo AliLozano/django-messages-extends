@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+"""models.py: messages extends"""
+
+from __future__ import unicode_literals
+
 import messages_extends
 from django.db import models
 from django.contrib.auth.models import User
@@ -65,4 +70,3 @@ class Message(models.Model):
         return read_tag
 
     tags = property(_get_tags)
-    

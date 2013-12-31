@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+"""urls.py: messages extends"""
+
+from __future__ import unicode_literals
+
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',

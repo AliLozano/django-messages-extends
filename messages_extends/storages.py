@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+"""storages.py: messages extends"""
+
+from __future__ import unicode_literals
+
 from django.contrib.messages.storage import get_storage
 from django.contrib.messages.storage.base import BaseStorage, Message
 from constants import STICKY_MESSAGE_LEVELS

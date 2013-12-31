@@ -1,5 +1,8 @@
-# coding=utf-8
-"""Tests for messages-extends"""
+# -*- coding: utf-8 -*-
+"""tests.py: Tests for messages-extends"""
+
+from __future__ import unicode_literals
+
 import datetime
 
 from django.conf import settings
