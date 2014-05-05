@@ -1,5 +1,10 @@
+# -*- coding: utf-8 -*-
+"""constants.py: messages extends"""
+
 #if level for messages is 11 to don't show debug messages,
 #then debug persistent and debug sticky don't show
+from __future__ import unicode_literals
+
 
 DEBUG = 10
 INFO = 20

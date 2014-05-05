@@ -1,13 +1,18 @@
+# -*- coding: utf-8 -*-
+"""models.py: messages extends"""
+
+from __future__ import unicode_literals
+
 import messages_extends
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils.encoding import force_unicode
 from django.contrib.messages import utils
+from django.conf import settings
 
 LEVEL_TAGS = utils.get_level_tags()
 
 class Message(models.Model):
-    user = models.ForeignKey(User, blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     message = models.TextField()
     LEVEL_CHOICES = (
         (messages_extends.DEBUG_PERSISTENT, 'PERSISTENT DEBUG'),
@@ -65,4 +70,3 @@ class Message(models.Model):
         return read_tag
 
     tags = property(_get_tags)
-    
