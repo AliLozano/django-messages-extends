@@ -35,9 +35,9 @@ Installation
 This document assumes that you are familiar with Python and Django.
 
 1. [Download and unzip the app](https://github.com/AliLozano/django-messages-extends),
-or clone the source using `git`:
+or install using `pip`:
 
-        $ git clone git://github.com/AliLozano/django-messages-extends.git
+        $ pip install django-messages-extends
 
 2. Make sure `messages_extends` is on your `PYTHONPATH`.
 3. Add `messages_extends` to your `INSTALLED_APPS` setting.
