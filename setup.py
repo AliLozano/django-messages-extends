@@ -21,21 +21,14 @@ setup(
     packages=[
         'messages_extends',
     ],
-    include_package_data=True,
-    package_data={
-        'messages_extends': [
-            'templates/messages_extends/*/*.html',
-            'static/*',
-        ]
-    },
+
     classifiers=[
-        'Development Status :: Beta',
+        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: MITLicense',
+        'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Framework :: Django',
     ],
-    zip_safe=False,
 )
