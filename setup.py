@@ -21,7 +21,14 @@ setup(
     packages=[
         'messages_extends',
     ],
-
+    include_package_data=True,
+    package_data={
+        'messages_extends': [
+            'templates/messages_extends/*/*.html',
+            'static/*',
+        ],
+        '': ['README.md', 'LICENSE.txt']
+    },
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
