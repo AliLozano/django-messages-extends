@@ -184,13 +184,21 @@ Or use:
 
     <script src="{% static "close-alerts.js" %}"></script>
 
+DON'T FORGET: If you have CSRF enabled, you have to add csrf code by js, [see django Documentation](https://docs.djangoproject.com/en/dev/ref/contrib/csrf/#ajax)
+
+If you don't want see close button in sticky alerts, you can use css for hide them:
+
+    .alert.sticky .close{
+      display: none;
+    }
+
 ### Other Backends ###
 
 You can use other backends, by default use:
 
     MESSAGES_STORAGES = ('messages_extends.storages.StickyStorage',
              'messages_extends.storages.PersistentStorage',
-             'django.contrib.messages.storage.session.CookieStorage',
+             'django.contrib.messages.storage.cookie.CookieStorage',
              'django.contrib.messages.storage.session.SessionStorage'))
 
 But you can add or remove other backends in your settings in order that you need execute that,
@@ -204,7 +212,7 @@ activity stream you can use [django-activity-stream](https://github.com/justquic
 
 ## License ##
 
-Django Messages Extends is provided under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
+Django Messages Extends is provided under [The MIT License (MIT)](http://opensource.org/licenses/MIT).
 
 
 ## Credits ##

@@ -149,7 +149,7 @@ class PersistentStorage(BaseStorage):
         retrieved; e.g., ``(messages, all_retrieved)``.
         """
         if not self.get_user().is_authenticated():
-            return [], True
+            return [], False
         return self._message_queryset(), False
 
     def _store(self, messages, response, *args, **kwargs):
