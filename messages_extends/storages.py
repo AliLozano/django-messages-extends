@@ -162,22 +162,23 @@ class PersistentStorage(BaseStorage):
         """
         if not message.level in PERSISTENT_MESSAGE_LEVELS:
             return message
-        if self.get_user().is_anonymous():
+
+        user = kwargs["user"] or self.get_user()
+
+        if user.is_anonymous():
             raise NotImplementedError('Persistent message levels cannot be used for anonymous users.')
         message_persistent = PersistentMessage()
         message_persistent.level = message.level
         message_persistent.message = message.message
         message_persistent.extra_tags = message.extra_tags
-        if kwargs.has_key("user"):
-            message_persistent.user = kwargs["user"]
-        else:
-            message_persistent.user = self.get_user()
+        message_persistent.user = user
+
         if kwargs.has_key("expires"):
             message_persistent.expires = kwargs["expires"]
         message_persistent.save()
         return None
 
-    def add(self, level, message, extra_tags=''):
+    def add(self, level, message, extra_tags='', *args, **kwargs):
         """
         Queues a message to be stored.
 
@@ -193,7 +194,7 @@ class PersistentStorage(BaseStorage):
             # Add the message.
         self.added_new = True
         message = Message(level, message, extra_tags=extra_tags)
-        message = self.process_message(message)
+        message = self.process_message(message, *args, **kwargs)
         if message:
             self._queued_messages.append(message)
 
