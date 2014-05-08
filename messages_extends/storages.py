@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 from django.contrib.messages.storage import get_storage
 from django.contrib.messages.storage.base import BaseStorage, Message
-from constants import STICKY_MESSAGE_LEVELS
+from .constants import STICKY_MESSAGE_LEVELS
 from django.conf import settings
 from messages_extends.models import Message as PersistentMessage
 from messages_extends.constants import PERSISTENT_MESSAGE_LEVELS
@@ -173,7 +173,7 @@ class PersistentStorage(BaseStorage):
         message_persistent.extra_tags = message.extra_tags
         message_persistent.user = user
 
-        if kwargs.has_key("expires"):
+        if "expires" in kwargs:
             message_persistent.expires = kwargs["expires"]
         message_persistent.save()
         return None

@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 import messages_extends
 from django.db import models
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 from django.contrib.messages import utils
 from django.conf import settings
 
@@ -33,7 +33,7 @@ class Message(models.Model):
                self.message == other.message
 
     def __unicode__(self):
-        return force_unicode(self.message)
+        return force_text(self.message)
 
 
     def _prepare_message(self):
@@ -42,19 +42,19 @@ class Message(models.Model):
         and ``extra_tags`` and ``subject`` to unicode in case they are lazy translations.
 
         Known "safe" types (None, int, etc.) are not converted (see Django's
-        ``force_unicode`` implementation for details).
+        ``force_text`` implementation for details).
         """
-        self.message = force_unicode(self.message, strings_only=True)
-        self.extra_tags = force_unicode(self.extra_tags, strings_only=True)
+        self.message = force_text(self.message, strings_only=True)
+        self.extra_tags = force_text(self.extra_tags, strings_only=True)
 
     def save(self, *args, **kwargs):
         self._prepare_message()
         super(Message, self).save(*args, **kwargs)
 
     def _get_tags(self):
-        label_tag = force_unicode(LEVEL_TAGS.get(self.level, ''),
+        label_tag = force_text(LEVEL_TAGS.get(self.level, ''),
             strings_only=True)
-        extra_tags = force_unicode(self.extra_tags, strings_only=True)
+        extra_tags = force_text(self.extra_tags, strings_only=True)
 
         if self.read:
             read_tag = "read"
