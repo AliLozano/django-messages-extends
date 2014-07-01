@@ -1,4 +1,5 @@
 import os
+import codecs
 from distutils.core import setup
 
 
@@ -10,7 +11,7 @@ setup(
     name='django-messages-extends',
     version='0.3',
     description='A Django app for extends Django\'s messages framework, adds sticky messages and persistent messages',
-    long_description=read('README.md'),
+    long_description=codecs.open('README.md', 'r', 'utf-8').read(),
     author='AliLozano',
     author_email='alilozanoc@gmail.com',
     #base-project = 'https://github.com/philomat/django-persistent-messages',
