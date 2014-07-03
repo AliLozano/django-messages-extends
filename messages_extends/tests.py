@@ -76,7 +76,7 @@ class MessagesTests(TestCase):
         messages.add_message(self.client, WARNING_PERSISTENT, "Warning..")
         result = Message.objects.all()[0]
         self.assertFalse(result.read)
-        url = reverse('messages:mark_read', kwargs={'message_id': result.id})
+        url = reverse('messages:message_mark_read', kwargs={'message_id': result.id})
         self.client.get(url)
 
         result = Message.objects.all()[0]
@@ -98,7 +98,7 @@ class MessagesTests(TestCase):
         messages.add_message(self.client, WARNING_PERSISTENT, "Warning..", user=user2)
         result = Message.objects.all()[0]
         self.assertEqual(result.user, user2)
-        url = reverse('messages:mark_read', kwargs={'message_id': result.id})
+        url = reverse('messages:message_mark_read', kwargs={'message_id': result.id})
         self.client.get(url)
         result = Message.objects.all()[0]
         self.assertFalse(result.read)
