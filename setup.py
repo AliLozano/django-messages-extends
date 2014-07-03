@@ -39,4 +39,7 @@ setup(
         'Programming Language :: Python',
         'Framework :: Django',
     ],
+    tests_require = ['django-setuptest'],
+    test_suite='setuptest.setuptest.SetupTestSuite',
+    py_modules=['messages_extends'],
 )

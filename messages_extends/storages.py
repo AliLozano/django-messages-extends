@@ -156,14 +156,14 @@ class PersistentStorage(BaseStorage):
         #There are alredy saved.
         return [message for message in messages if not message.level in PERSISTENT_MESSAGE_LEVELS]
 
-    def process_message(self, message,*args, **kwargs):
+    def process_message(self, message, *args, **kwargs):
         """
         If its level is into persist levels, convert the message to models and save it
         """
         if not message.level in PERSISTENT_MESSAGE_LEVELS:
             return message
 
-        user = kwargs["user"] or self.get_user()
+        user = kwargs.get("user") or self.get_user()
 
         if user.is_anonymous():
             raise NotImplementedError('Persistent message levels cannot be used for anonymous users.')
