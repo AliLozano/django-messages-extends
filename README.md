@@ -220,3 +220,6 @@ Django Messages Extends is provided under [The MIT License (MIT)](http://opensou
 Django Messages Extends is a project by [Ali Lozano](alilozanoc@gmail.com).  Additional credit
 goes to:
   * [Steven Klass](sklass@pointcircle.com)
+
+
+Inspired and based in [django-persistent-messages](https://github.com/samluescher/django-persistent-messages)
