@@ -3,7 +3,12 @@
 
 from __future__ import unicode_literals
 
-from django.contrib.messages.storage import get_storage
+try:
+    from django.contrib.messages.storage import get_storage
+except ImportError:
+    # Django 1.7
+    from django.utils.module_loading import import_string as get_storage
+
 from django.contrib.messages.storage.base import BaseStorage, Message
 from .constants import STICKY_MESSAGE_LEVELS
 from django.conf import settings
