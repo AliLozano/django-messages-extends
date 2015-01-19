@@ -184,7 +184,7 @@ Or use:
 
     <script src="{% static "close-alerts.js" %}"></script>
 
-DON'T FORGET: If you have CSRF enabled, you have to add csrf code by js, [see django Documentation](https://docs.djangoproject.com/en/dev/ref/contrib/csrf/#ajax)
+DON'T FORGET: If you have CSRF enabled, you have to add csrf code by js, [see django Documentation](https://docs.djangoproject.com/en/dev/ref/csrf/#ajax)
 
 If you don't want see close button in sticky alerts, you can use css for hide them:
 
