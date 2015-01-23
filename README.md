@@ -251,7 +251,7 @@ Django Messages Extends is provided under [The MIT License (MIT)](http://opensou
 
 ## Credits ##
 
-Django Messages Extends is a project by [Ali Lozano](alilozanoc@gmail.com).  Additional credit
+Django Messages Extends is a project by [Ali Lozano](mailto:alilozanoc@gmail.com).  Additional credit
 goes to:
   * [Steven Klass](sklass@pointcircle.com)
 
