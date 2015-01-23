@@ -14,7 +14,7 @@ A Django app for extends Django's [messages framework](http://docs.djangoproject
 A "sticky" message is a message where the user must hit the close button in order to get rid of
 it within that session.
 
-* For messages that are in some midleware or is only to the current request and don't need save it.
+* For messages that are in some middleware or is only to the current request and don't need save it.
 * This is very similar to the default except that you explicitly must close the dialog to remove
 the message.
 * This backend never save anything only simulate that do that.
