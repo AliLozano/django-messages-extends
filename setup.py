@@ -21,6 +21,7 @@ setup(
     keywords=['messages', 'django', 'persistent', 'sticky', ],
     packages=[
         'messages_extends',
+        'messages_extends.migrations',
     ],
     include_package_data=True,
     package_data={
