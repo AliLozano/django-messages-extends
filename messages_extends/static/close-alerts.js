@@ -1,9 +1,30 @@
-$(function() {
-    $("a.close[close-href]").click(function (e) {
-            e.preventDefault();
-            $.post($(this).attr("close-href"), "", function () {
-            });
+$(function () {
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = jQuery.trim(cookies[i]);
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
         }
-    );
+      }
+    }
+    return cookieValue;
+  }
+
+  var csrftoken = getCookie('csrftoken');
+  $("a.close[close-href]").click(function (e) {
+    e.preventDefault();
+    $.ajax({
+      url: $(this).attr("close-href"),
+      type: 'post',
+      headers: {
+        "X-CSRFToken": csrftoken
+      }
+    });
+  });
 });
 

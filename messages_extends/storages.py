@@ -135,15 +135,7 @@ class PersistentStorage(BaseStorage):
         """
         Return a queryset of messages for the request user
         """
-        expire = timezone.now()
-
-
-        qs = PersistentMessage.objects.\
-        filter(user=self.get_user()).\
-        filter(Q(expires=None) | Q(expires__gt=expire))
-        if not include_read:
-            qs = qs.exclude(read=True)
-        return qs
+        return PersistentMessage.objects.for_user(self.get_user())
 
 
     def _get(self, *args, **kwargs):
@@ -153,8 +145,6 @@ class PersistentStorage(BaseStorage):
         intended to be stored in this storage were, in fact, stored and
         retrieved; e.g., ``(messages, all_retrieved)``.
         """
-        if not self.get_user().is_authenticated():
-            return [], False
         return self._message_queryset(), False
 
     def _store(self, messages, response, *args, **kwargs):
@@ -168,13 +158,16 @@ class PersistentStorage(BaseStorage):
         if not message.level in PERSISTENT_MESSAGE_LEVELS:
             return message
 
-        user = kwargs.get("user") or self.get_user()
+        if "user" in kwargs:
+            user = kwargs['user']
+        else:
+            user = self.get_user()
+        detail_link = kwargs.get("detail_link")
 
-        if user.is_anonymous():
-            raise NotImplementedError('Persistent message levels cannot be used for anonymous users.')
         message_persistent = PersistentMessage()
         message_persistent.level = message.level
         message_persistent.message = message.message
+        message_persistent.detail_link = detail_link
         message_persistent.extra_tags = message.extra_tags
         message_persistent.user = user
 
@@ -207,7 +200,7 @@ class PersistentStorage(BaseStorage):
         if hasattr(self.request, 'user'):
             return self.request.user
         else:
-            return AnonymousUser()
+            return None
 
 
 class StickyStorage(BaseStorage):

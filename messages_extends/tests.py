@@ -15,7 +15,8 @@ from django.test import Client, TestCase
 from django.test.utils import override_settings
 
 from . import PERSISTENT_MESSAGE_LEVELS, WARNING_PERSISTENT
-from .models import Message
+from .models import Message, MessageRead
+
 
 class MessagesClient(Client):
     """ Baseline Client for Messages Extends.  This is needed to hook messages into the client
@@ -103,3 +104,62 @@ class MessagesTests(TestCase):
         result = Message.objects.all()[0]
         self.assertFalse(result.read)
 
+    def test_broadcast_message_visible_for_all_users(self):
+        messages.add_message(self.client, WARNING_PERSISTENT, "Warning..", user=None)
+        user1 = self._get_user()
+        user2 = self._get_user(username='john')
+        message1 = Message.objects.for_user(user1)[0]
+        self.assertEqual(message1.user, None)
+        self.assertEqual(message1.message, 'Warning..')
+        message2 = Message.objects.for_user(user2)[0]
+        self.assertEqual(message1, message2)
+
+    def test_mark_broadcast_message_read(self):
+        user = self._get_user()
+        self.client.login(username=user.username, password='password')
+        messages.add_message(self.client, WARNING_PERSISTENT, "Warning..", user=None)
+        message = Message.objects.for_user(user)[0]
+        url = reverse('messages:message_mark_read', kwargs={'message_id': message.id})
+        self.client.get(url)
+        result = Message.objects.for_user(user)
+        self.assertEqual(len(result), 0)
+        message_read = MessageRead.objects.all()[0]
+        self.assertTrue(message_read.message, message)
+        self.assertTrue(message_read.user, user)
+        self.assertTrue(message_read.read, True)
+
+    def test_broadcast_message_marked_read_still_visible_for_another_user(self):
+        user1 = self._get_user()
+        user2 = self._get_user(username='john')
+        self.client.login(username=user1.username, password='password')
+        messages.add_message(self.client, WARNING_PERSISTENT, "Warning..", user=None)
+        message1 = Message.objects.for_user(user1)[0]
+        message2 = Message.objects.for_user(user2)[0]
+        self.assertEqual(message1, message2)
+        url = reverse('messages:message_mark_read', kwargs={'message_id': message1.id})
+        self.client.get(url)
+        result1 = Message.objects.for_user(user1)
+        self.assertEqual(len(result1), 0)
+        result2 = Message.objects.for_user(user2)
+        self.assertEqual(len(result2), 1)
+
+    def test_mark_all_read(self):
+        user = self._get_user()
+        self.client.login(username=user.username, password='password')
+        messages.add_message(self.client, WARNING_PERSISTENT, "Warning1")
+        messages.add_message(self.client, WARNING_PERSISTENT, "Warning2")
+        messages.add_message(self.client, WARNING_PERSISTENT, "Warning3", user=None)
+        messages.add_message(self.client, WARNING_PERSISTENT, "Warning4", user=None)
+        user_messages = Message.objects.for_user(user)
+        self.assertEqual(len(user_messages), 4)
+        url = reverse('messages:message_mark_all_read')
+        self.client.get(url)
+        result = Message.objects.for_user(user)
+        self.assertEqual(len(result), 0)
+
+    def test_add_detail_link(self):
+        user = self._get_user()
+        self.client.login(username=user.username, password='password')
+        messages.add_message(self.client, WARNING_PERSISTENT, "Warning..", user=None, detail_link='http://www.google.com')
+        message = Message.objects.for_user(user)[0]
+        self.assertEqual(message.detail_link, 'http://www.google.com')

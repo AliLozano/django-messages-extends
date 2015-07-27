@@ -3,3 +3,6 @@
 *.egg-info
 coverage.xml
 pep8.txt
+dist
+.idea
+.coverage

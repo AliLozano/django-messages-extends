@@ -4,7 +4,9 @@ Django Messages Extends
 A Django app for extends Django's [messages framework](http://docs.djangoproject
 .com/en/dev/ref/contrib/messages/) (`django.contrib.messages`). framework by adding "sticky"  and
  "persistent" backend message storages.  This also supports the notion of sending
- persistent messages to other users in a machine-to-user process.
+ persistent messages to other users in a machine-to-user process. If you do not specify a user to
+ send the message to, it is considered a 'broadcast' message and all users will be able to see it
+ and dismiss it individually.
 
 
 ## Storages ##

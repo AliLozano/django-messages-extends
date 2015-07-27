@@ -1,6 +1,6 @@
 import os
 import codecs
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 
 def read(fname):
@@ -19,10 +19,7 @@ setup(
     license='MIT',
     url='https://github.com/AliLozano/django-messages-extends/',
     keywords=['messages', 'django', 'persistent', 'sticky', ],
-    packages=[
-        'messages_extends',
-    ],
-    include_package_data=True,
+    packages=find_packages(),
     package_data={
         'messages_extends': [
             'templates/messages_extends/*/*.html',

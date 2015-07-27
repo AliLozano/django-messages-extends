@@ -2,6 +2,6 @@
     <div class="alert {% if message.tags %} alert-{{ message.tags }} {% endif %}">
         {# close-href is used because href is used by bootstrap to closing other divs #}
         <a class="close" data-dismiss="alert"{% if message.pk %} close-href="{% url "message_mark_read" message.pk %}"{% endif %}>×</a>
-        {{ message|safe }}
+        {{ message|safe }}{% if message.detail_link %} - For more information, see: <a href="{{ message.detail_link }}" target="_blank">{{ message.detail_link }}</a>{% endif %}
     </div>
 {% endfor %}
