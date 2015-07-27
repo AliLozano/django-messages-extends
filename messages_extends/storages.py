@@ -197,7 +197,7 @@ class PersistentStorage(BaseStorage):
             self._queued_messages.append(message)
 
     def get_user(self):
-        if hasattr(self.request, 'user'):
+        if hasattr(self.request, 'user') and self.request.user.is_authenticated():
             return self.request.user
         else:
             return None
