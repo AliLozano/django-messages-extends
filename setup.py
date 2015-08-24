@@ -9,7 +9,7 @@ def read(fname):
 
 setup(
     name='django-messages-extends',
-    version='0.3.1',
+    version='0.3.2',
     description='A Django app for extends Django\'s messages framework, adds sticky messages and persistent messages',
     long_description=codecs.open('README.md', 'r', 'utf-8').read(),
     author='AliLozano',
@@ -21,6 +21,7 @@ setup(
     keywords=['messages', 'django', 'persistent', 'sticky', ],
     packages=[
         'messages_extends',
+        'messages_extends.migrations',
     ],
     include_package_data=True,
     package_data={
