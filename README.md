@@ -140,7 +140,7 @@ Or use persistent messages with constants in messages_extends.constants
 ```python
 from django.contrib import messages
 from messages_extends import constants as constants_messages
-messages.add_message(request, constants.WARNING_PERSISTENT, 'You are going to see this message until you mark it as read.')
+messages.add_message(request, constants_messages.WARNING_PERSISTENT, 'You are going to see this message until you mark it as read.')
 ```
 
 Or via the shortcut method.
@@ -158,7 +158,7 @@ And sticky messages:
 ```python
 from django.contrib import messages
 from messages_extends import constants as constants_messages
-messages.add_message(request, constants.WARNING_STICKY, 'You will going to see this messages only in this request')
+messages.add_message(request, constants_messages.WARNING_STICKY, 'You will going to see this messages only in this request')
 ```
 
 You can also pass this function a `User` object if the message is supposed to be sent to a user
@@ -166,6 +166,8 @@ other than the one who is currently authenticated. User Sally will see this mess
  she logs in:
 
 ```python
+from django.contrib import messages
+from messages_extends import constants as constants_messages
 from django.contrib.auth.models import User
 sally = User.objects.get(username='Sally')
 messages.add_message(request, constants_messages.INFO_PERSISTENT, "Hola abc desde %s" %request.user, user=sally)
