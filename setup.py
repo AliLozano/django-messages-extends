@@ -1,7 +1,7 @@
 import os
 import codecs
-from distutils.core import setup
-
+#from distutils.core import setup
+from setuptools import setup
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
@@ -9,7 +9,7 @@ def read(fname):
 
 setup(
     name='django-messages-extends',
-    version='0.3.2',
+    version='0.5',
     description='A Django app for extends Django\'s messages framework, adds sticky messages and persistent messages',
     long_description=codecs.open('README.md', 'r', 'utf-8').read(),
     author='AliLozano',
@@ -32,7 +32,7 @@ setup(
         '': ['README.md', 'LICENSE.txt']
     },
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
