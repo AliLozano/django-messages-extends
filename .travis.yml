@@ -1,0 +1,19 @@
+cache:
+  pip: true
+
+language:
+  python
+
+python:
+  - "2.7"
+  - "3.6"
+
+env:
+  - DJANGO=18
+  - DJANGO=110
+
+install:
+  - export TOXENV=py${TRAVIS_PYTHON_VERSION//./}-django${DJANGO}
+
+script:
+  - tox -e ${TOXENV}
