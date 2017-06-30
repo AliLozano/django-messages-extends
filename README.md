@@ -1,7 +1,9 @@
 Django Messages Extends
 ==========================
 
+
 [![Build Status](https://travis-ci.org/mpasternak/django-messages-extends.svg?branch=master)](https://travis-ci.org/mpasternak/django-messages-extends)
+
 
 A Django app for extends Django's [messages framework](http://docs.djangoproject
 .com/en/dev/ref/contrib/messages/) (`django.contrib.messages`). framework by adding "sticky"  and
