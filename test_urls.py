@@ -1,18 +1,11 @@
-from django.conf.urls import patterns, include, url
+import django
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+if django.VERSION >= (1,10):
+    from django.conf.urls import include, url
+    patterns = lambda _ignore, x: list([x,])
+else:
+    from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'temp.views.home', name='home'),
-    # url(r'^temp/', include('temp.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
     url(r'^messages/', include('messages_extends.urls', namespace='messages')),
 )
