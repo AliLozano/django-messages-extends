@@ -6,6 +6,8 @@ language:
 
 python:
   - "2.7"
+  - "3.4"
+  - "3.5"
   - "3.6"
 
 env:
@@ -13,6 +15,7 @@ env:
   - DJANGO=110
 
 install:
+  - pip install tox
   - export TOXENV=py${TRAVIS_PYTHON_VERSION//./}-django${DJANGO}
 
 script:
