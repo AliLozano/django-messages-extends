@@ -93,6 +93,11 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+import django
+if django.VERSION >= (2,0):
+    MIDDLEWARE = list(MIDDLEWARE_CLASSES)
+    del MIDDLEWARE_CLASSES
+
 ROOT_URLCONF = 'test_urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.

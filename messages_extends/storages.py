@@ -170,7 +170,11 @@ class PersistentStorage(BaseStorage):
 
         user = kwargs.get("user") or self.get_user()
 
-        if user.is_anonymous():
+        try:
+            anonymous = user.is_anonymous()
+        except TypeError:
+            anonymous = user.is_anonymous
+        if anonymous is True:
             raise NotImplementedError('Persistent message levels cannot be used for anonymous users.')
         message_persistent = PersistentMessage()
         message_persistent.level = message.level

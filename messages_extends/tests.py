@@ -10,7 +10,10 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import AnonymousUser, User
 from django.contrib.messages.storage import default_storage
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 from django.test import Client, TestCase
 from django.test.utils import override_settings
 
@@ -93,7 +96,7 @@ class MessagesTests(TestCase):
 
     def test_mark_message_read_for_other_user(self):
         """Test the basic message for another user"""
-        self.client.login(username=self._get_user().username, password='password')
+        res = self.client.login(username=self._get_user().username, password='password')
         user2 = self._get_user(username="john")
         messages.add_message(self.client, WARNING_PERSISTENT, "Warning..", user=user2)
         result = Message.objects.all()[0]
