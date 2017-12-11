@@ -174,7 +174,7 @@ class PersistentStorage(BaseStorage):
             anonymous = user.is_anonymous()
         except TypeError:
             anonymous = user.is_anonymous
-        if anonymous is True:
+        if anonymous:
             raise NotImplementedError('Persistent message levels cannot be used for anonymous users.')
         message_persistent = PersistentMessage()
         message_persistent.level = message.level
