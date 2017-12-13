@@ -13,7 +13,8 @@ LEVEL_TAGS = utils.get_level_tags()
 
 @python_2_unicode_compatible
 class Message(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True,
+                             on_delete=models.CASCADE)
     message = models.TextField()
     LEVEL_CHOICES = (
         (messages_extends.DEBUG_PERSISTENT, 'PERSISTENT DEBUG'),
