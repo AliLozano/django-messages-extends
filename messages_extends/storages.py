@@ -153,7 +153,7 @@ class PersistentStorage(BaseStorage):
         intended to be stored in this storage were, in fact, stored and
         retrieved; e.g., ``(messages, all_retrieved)``.
         """
-        if not self.get_user().is_authenticated():
+        if not self.get_user().is_authenticated:
             return [], False
         return self._message_queryset(), False
 
