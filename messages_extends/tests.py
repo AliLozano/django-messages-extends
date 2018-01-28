@@ -10,6 +10,10 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import AnonymousUser, User
 from django.contrib.messages.storage import default_storage
+from django.test.client import RequestFactory
+
+from messages_extends.storages import PersistentStorage
+
 try:
     from django.core.urlresolvers import reverse
 except ImportError:
@@ -106,3 +110,17 @@ class MessagesTests(TestCase):
         result = Message.objects.all()[0]
         self.assertFalse(result.read)
 
+    def test_storages__get(self):
+        """Unit test for storages.PersistentStorage._get, which gave bugs
+        with Django 2.0"""
+        rf = RequestFactory()
+        req = rf.get("/")
+        req.user = self._get_user(username="foo")
+
+        ps = PersistentStorage(req)
+        no_called = []
+        def _patched_queryset(*args, **kw):
+            no_called.append(1)
+        ps._message_queryset = _patched_queryset
+        ps._get()
+        self.assertEquals(no_called[0], 1)
