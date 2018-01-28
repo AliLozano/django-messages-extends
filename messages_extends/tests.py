@@ -118,4 +118,9 @@ class MessagesTests(TestCase):
         req.user = self._get_user(username="foo")
 
         ps = PersistentStorage(req)
+        no_called = []
+        def _patched_queryset(*args, **kw):
+            no_called.append(1)
+        ps._message_queryset = _patched_queryset
         ps._get()
+        self.assertEquals(no_called[0], 1)
