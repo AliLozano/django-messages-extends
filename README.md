@@ -2,7 +2,7 @@ Django Messages Extends
 ==========================
 
 
-[![Build Status](https://travis-ci.org/mpasternak/django-messages-extends.svg?branch=master)](https://travis-ci.org/mpasternak/django-messages-extends)
+[![Build Status](https://travis-ci.org/AliLozano/django-messages-extends.svg?branch=master)](https://travis-ci.org/mpasternak/django-messages-extends)
 
 [![PyPI version](https://badge.fury.io/py/django-messages-extends.svg)](https://badge.fury.io/py/django-messages-extends)
 
