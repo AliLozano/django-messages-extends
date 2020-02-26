@@ -126,7 +126,9 @@ class MessagesTests(TestCase):
         self.assertEquals(no_called[0], 1)
 
     def test_delete(self):
+        user = self._get_user()
+        self.client.login(username=user.username, password='password')
         messages.add_message(self.client, WARNING_PERSISTENT, "Warning Test")
-        self.assertEquals(Messages.objects.count(), 1)
-        messages.delete()
-        self.assertEquals(Messages.objects.count(), 0)
+        self.assertEquals(Message.objects.count(), 1)
+        Message.objects.filter(user=user).first().delete()
+        self.assertEquals(Message.objects.count(), 0)
