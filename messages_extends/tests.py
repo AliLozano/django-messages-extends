@@ -124,3 +124,9 @@ class MessagesTests(TestCase):
         ps._message_queryset = _patched_queryset
         ps._get()
         self.assertEquals(no_called[0], 1)
+
+    def test_delete(self):
+        messages.add_message(self.client, WARNING_PERSISTENT, "Warning Test")
+        self.assertEquals(Messages.objects.count(), 1)
+        messages.delete()
+        self.assertEqual(Messages.objects.count(), 0)
