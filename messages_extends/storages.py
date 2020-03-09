@@ -1,19 +1,11 @@
 # -*- coding: utf-8 -*-
 """storages.py: messages extends"""
 
-from __future__ import unicode_literals
-
-try:
-    from django.contrib.messages.storage import get_storage
-except ImportError:
-    # Django 1.7
-    from django.utils.module_loading import import_string as get_storage
-
+from django.utils.module_loading import import_string as get_storage
 from django.contrib.messages.storage.base import BaseStorage, Message
-from .constants import STICKY_MESSAGE_LEVELS
 from django.conf import settings
 from messages_extends.models import Message as PersistentMessage
-from messages_extends.constants import PERSISTENT_MESSAGE_LEVELS
+from messages_extends.constants import PERSISTENT_MESSAGE_LEVELS, STICKY_MESSAGE_LEVELS
 from django.contrib.auth.models import AnonymousUser
 from django.db.models import Q
 try:

@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """tests.py: Tests for messages-extends"""
 
-from __future__ import unicode_literals
-
 import datetime
 
 from django.conf import settings
@@ -14,15 +12,12 @@ from django.test.client import RequestFactory
 
 from messages_extends.storages import PersistentStorage
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 from django.test import Client, TestCase
 from django.test.utils import override_settings
 
-from . import PERSISTENT_MESSAGE_LEVELS, WARNING_PERSISTENT
-from .models import Message
+from messages_extends.constants import PERSISTENT_MESSAGE_LEVELS, WARNING_PERSISTENT
+from messages_extends.models import Message
 
 class MessagesClient(Client):
     """ Baseline Client for Messages Extends.  This is needed to hook messages into the client
@@ -126,7 +121,9 @@ class MessagesTests(TestCase):
         self.assertEquals(no_called[0], 1)
 
     def test_delete(self):
+        user = self._get_user()
+        self.client.login(username=user.username, password='password')
         messages.add_message(self.client, WARNING_PERSISTENT, "Warning Test")
-        self.assertEquals(Messages.objects.count(), 1)
-        messages.delete()
-        self.assertEqual(Messages.objects.count(), 0)
+        self.assertEquals(Message.objects.count(), 1)
+        Message.objects.filter(user=user).first().delete()
+        self.assertEquals(Message.objects.count(), 0)

@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """views.py: messages extends"""
 
-from __future__ import unicode_literals
-
 from messages_extends.models import Message
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
