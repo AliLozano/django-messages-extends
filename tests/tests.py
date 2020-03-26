@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """tests.py: Tests for messages-extends"""
 
-from __future__ import unicode_literals
-
 import datetime
 
 from django.conf import settings
@@ -10,12 +8,16 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import AnonymousUser, User
 from django.contrib.messages.storage import default_storage
-from django.core.urlresolvers import reverse
+from django.test.client import RequestFactory
+
+from messages_extends.storages import PersistentStorage
+
+from django.urls import reverse
 from django.test import Client, TestCase
 from django.test.utils import override_settings
 
-from . import PERSISTENT_MESSAGE_LEVELS, WARNING_PERSISTENT
-from .models import Message
+from messages_extends.constants import PERSISTENT_MESSAGE_LEVELS, WARNING_PERSISTENT
+from messages_extends.models import Message
 
 class MessagesClient(Client):
     """ Baseline Client for Messages Extends.  This is needed to hook messages into the client
@@ -93,7 +95,7 @@ class MessagesTests(TestCase):
 
     def test_mark_message_read_for_other_user(self):
         """Test the basic message for another user"""
-        self.client.login(username=self._get_user().username, password='password')
+        res = self.client.login(username=self._get_user().username, password='password')
         user2 = self._get_user(username="john")
         messages.add_message(self.client, WARNING_PERSISTENT, "Warning..", user=user2)
         result = Message.objects.all()[0]
@@ -103,3 +105,25 @@ class MessagesTests(TestCase):
         result = Message.objects.all()[0]
         self.assertFalse(result.read)
 
+    def test_storages__get(self):
+        """Unit test for storages.PersistentStorage._get, which gave bugs
+        with Django 2.0"""
+        rf = RequestFactory()
+        req = rf.get("/")
+        req.user = self._get_user(username="foo")
+
+        ps = PersistentStorage(req)
+        no_called = []
+        def _patched_queryset(*args, **kw):
+            no_called.append(1)
+        ps._message_queryset = _patched_queryset
+        ps._get()
+        self.assertEquals(no_called[0], 1)
+
+    def test_delete(self):
+        user = self._get_user()
+        self.client.login(username=user.username, password='password')
+        messages.add_message(self.client, WARNING_PERSISTENT, "Warning Test")
+        self.assertEquals(Message.objects.count(), 1)
+        Message.objects.filter(user=user).first().delete()
+        self.assertEquals(Message.objects.count(), 0)

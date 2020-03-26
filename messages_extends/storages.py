@@ -1,19 +1,11 @@
 # -*- coding: utf-8 -*-
 """storages.py: messages extends"""
 
-from __future__ import unicode_literals
-
-try:
-    from django.contrib.messages.storage import get_storage
-except ImportError:
-    # Django 1.7
-    from django.utils.module_loading import import_string as get_storage
-
+from django.utils.module_loading import import_string as get_storage
 from django.contrib.messages.storage.base import BaseStorage, Message
-from .constants import STICKY_MESSAGE_LEVELS
 from django.conf import settings
 from messages_extends.models import Message as PersistentMessage
-from messages_extends.constants import PERSISTENT_MESSAGE_LEVELS
+from messages_extends.constants import PERSISTENT_MESSAGE_LEVELS, STICKY_MESSAGE_LEVELS
 from django.contrib.auth.models import AnonymousUser
 from django.db.models import Q
 try:
@@ -153,7 +145,10 @@ class PersistentStorage(BaseStorage):
         intended to be stored in this storage were, in fact, stored and
         retrieved; e.g., ``(messages, all_retrieved)``.
         """
-        if not self.get_user().is_authenticated():
+        is_authenticated = self.get_user().is_authenticated
+        if callable(is_authenticated):
+            is_authenticated = is_authenticated()
+        if is_authenticated is not True:
             return [], False
         return self._message_queryset(), False
 
@@ -170,7 +165,11 @@ class PersistentStorage(BaseStorage):
 
         user = kwargs.get("user") or self.get_user()
 
-        if user.is_anonymous():
+        try:
+            anonymous = user.is_anonymous()
+        except TypeError:
+            anonymous = user.is_anonymous
+        if anonymous:
             raise NotImplementedError('Persistent message levels cannot be used for anonymous users.')
         message_persistent = PersistentMessage()
         message_persistent.level = message.level

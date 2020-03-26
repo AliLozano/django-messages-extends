@@ -2,8 +2,6 @@
 """constants.py: messages extends"""
 
 
-from __future__ import unicode_literals
-
 DEBUG = 10
 INFO = 20
 SUCCESS = 25
