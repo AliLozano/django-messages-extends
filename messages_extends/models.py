@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 """models.py: messages extends"""
 
-from __future__ import unicode_literals
-
 import messages_extends
 from django.db import models
-from django.utils.encoding import force_text, python_2_unicode_compatible
+from django.utils.encoding import force_text
 from django.contrib.messages import utils
 from django.conf import settings
 
 LEVEL_TAGS = utils.get_level_tags()
 
-@python_2_unicode_compatible
 class Message(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True,
+                             on_delete=models.CASCADE)
     message = models.TextField()
     LEVEL_CHOICES = (
         (messages_extends.DEBUG_PERSISTENT, 'PERSISTENT DEBUG'),
@@ -33,9 +31,11 @@ class Message(models.Model):
         return isinstance(other, Message) and self.level == other.level and\
                self.message == other.message
 
+    def __hash__(self):
+        return hash((self.level, self.message))
+
     def __str__(self):
         return force_text(self.message)
-
 
     def _prepare_message(self):
         """
