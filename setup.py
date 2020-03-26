@@ -42,4 +42,5 @@ setup(
     ],
     test_suite = 'runtests',
     py_modules=['messages_extends'],
+    python_requires='>=3',
 )
