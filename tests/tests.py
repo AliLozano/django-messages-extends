@@ -2,12 +2,14 @@
 """tests.py: Tests for messages-extends"""
 
 import datetime
+from unittest import mock
 
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import AnonymousUser, User
 from django.contrib.messages.storage import default_storage
+from django.db.models.deletion import Collector
 from django.test.client import RequestFactory
 
 from messages_extends.storages import PersistentStorage
@@ -126,4 +128,19 @@ class MessagesTests(TestCase):
         messages.add_message(self.client, WARNING_PERSISTENT, "Warning Test")
         self.assertEquals(Message.objects.count(), 1)
         Message.objects.filter(user=user).first().delete()
+        self.assertEquals(Message.objects.count(), 0)
+
+    @mock.patch.object(Collector, 'can_fast_delete')
+    def test_delete_user_complex_model(self, method_mock):
+        method_mock.return_value = False
+        user = self._get_user()
+        self.client.login(username=user.username, password='password')
+
+        # Create duplicated messages
+        messages.add_message(self.client, WARNING_PERSISTENT, "Warning Test")
+        messages.add_message(self.client, WARNING_PERSISTENT, "Warning Test")
+        self.assertEquals(Message.objects.count(), 2)
+
+        # User cascade deletes Message
+        user.delete()
         self.assertEquals(Message.objects.count(), 0)
