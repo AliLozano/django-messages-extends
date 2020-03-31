@@ -31,8 +31,7 @@ class Message(models.Model):
         return isinstance(other, Message) and self.level == other.level and\
                self.message == other.message
 
-    def __hash__(self):
-        return hash((self.level, self.message))
+    __hash__ = models.Model.__hash__
 
     def __str__(self):
         return force_text(self.message)
