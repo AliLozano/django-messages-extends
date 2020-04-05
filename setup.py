@@ -12,6 +12,7 @@ setup(
     version='0.6.1',
     description='A Django app for extends Django\'s messages framework, adds sticky messages and persistent messages',
     long_description=codecs.open('README.md', 'r', 'utf-8').read(),
+    long_description_content_type='text/markdown',
     author='AliLozano',
     author_email='alilozanoc@gmail.com',
     #base-project = 'https://github.com/philomat/django-persistent-messages',
