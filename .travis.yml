@@ -11,6 +11,7 @@ python:
 
 env:
   - DJANGO=22
+  - DJANGO=32
 
 install:
   - pip install tox
