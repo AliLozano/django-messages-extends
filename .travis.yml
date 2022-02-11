@@ -5,13 +5,21 @@ language:
   python
 
 python:
-  - "3.6"
-  - "3.7"
-  - "3.8"
+  - 3.6
+  - 3.7
+  - 3.8
 
 env:
   - DJANGO=22
   - DJANGO=32
+  - DJANGO=40
+
+jobs:
+  exclude:
+  - python: 3.6
+    env: DJANGO=40
+  - python: 3.7
+    env: DJANGO=40
 
 install:
   - pip install tox
