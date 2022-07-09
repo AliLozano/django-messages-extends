@@ -19,7 +19,7 @@ def message_mark_read(request, message_id):
     message = get_object_or_404(Message, user=request.user, pk=message_id)
     message.read = True
     message.save()
-    if not request.is_ajax():
+    if not request.headers.get('x-requested-with') == 'XMLHttpRequest':
         return HttpResponseRedirect(request.META.get('HTTP_REFERER') or '/')
     else:
         return HttpResponse('')
@@ -28,7 +28,7 @@ def message_mark_all_read(request):
     if not callable_or_bool(request.user.is_authenticated):
         raise PermissionDenied
     Message.objects.filter(user=request.user).update(read=True)
-    if not request.is_ajax():
+    if not request.headers.get('x-requested-with') == 'XMLHttpRequest':
         return HttpResponseRedirect(request.META.get('HTTP_REFERER') or '/')
     else:
         return HttpResponse('')
