@@ -120,15 +120,15 @@ class MessagesTests(TestCase):
             no_called.append(1)
         ps._message_queryset = _patched_queryset
         ps._get()
-        self.assertEquals(no_called[0], 1)
+        self.assertEqual(no_called[0], 1)
 
     def test_delete(self):
         user = self._get_user()
         self.client.login(username=user.username, password='password')
         messages.add_message(self.client, WARNING_PERSISTENT, "Warning Test")
-        self.assertEquals(Message.objects.count(), 1)
+        self.assertEqual(Message.objects.count(), 1)
         Message.objects.filter(user=user).first().delete()
-        self.assertEquals(Message.objects.count(), 0)
+        self.assertEqual(Message.objects.count(), 0)
 
     @mock.patch.object(Collector, 'can_fast_delete')
     def test_delete_user_complex_model(self, method_mock):
@@ -139,8 +139,8 @@ class MessagesTests(TestCase):
         # Create duplicated messages
         messages.add_message(self.client, WARNING_PERSISTENT, "Warning Test")
         messages.add_message(self.client, WARNING_PERSISTENT, "Warning Test")
-        self.assertEquals(Message.objects.count(), 2)
+        self.assertEqual(Message.objects.count(), 2)
 
         # User cascade deletes Message
         user.delete()
-        self.assertEquals(Message.objects.count(), 0)
+        self.assertEqual(Message.objects.count(), 0)
