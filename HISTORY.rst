@@ -1,5 +1,5 @@
-0.6.3 (not yet released)
-------------------------
+0.6.3 (2022-08-29)
+------------------
 
 * HISTORY.rst introduced,
 * dropped support for Django < 3.2, Python < 3.7
