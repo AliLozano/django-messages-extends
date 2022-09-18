@@ -81,7 +81,7 @@ MESSAGE_STORAGE = 'messages_extends.storages.FallbackStorage'
 
 7. Set up the database tables using
 
-	    $ manage.py makemigratations
+	    $ manage.py makemigrations
 	    $ manage.py migrate
 
 8. If you want to use the bundled templates, add the `templates` directory to your
