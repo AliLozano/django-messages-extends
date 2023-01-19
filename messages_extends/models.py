@@ -10,6 +10,7 @@ from django.conf import settings
 LEVEL_TAGS = utils.get_level_tags()
 
 class Message(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True,
                              on_delete=models.CASCADE)
     message = models.TextField()
